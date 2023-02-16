@@ -1,33 +1,60 @@
 #!/bin/bash
 
-dest_host="192.0.0.67" # Backup server IP (Note: Your cpanel server must be able to ssh to backup server. Use ssh-keys)
-dest_user="ubuntu" # Backup Server User
+# Backup server configuration
+dest_host="192.0.0.67"
+dest_user="ubuntu"
+
+# Backup directory configuration
+backup_files="/home/"
+remote_files="/home/ubuntu/manual-backup/daily"
+remote_dbs="/home/ubuntu/manual-backup/mysql/daily"
+
+# Log file configuration
+log_file="/var/log/backup.log"
+
+# Get the current date in YYYY-MM-DD format
 day=$(date +%Y-%m-%d)
-backup_files='/home/' # Location of cpanel accounts to backup (usually inside /home/)
-remote_files='/home/ubuntu/manual-backup/daily' # Path to where you want to save the files backup
-remote_dbs='/home/ubuntu/manual-backup/mysql/daily' # Path to where you want to save the database backup
 
-
-
-
-# Backup Account files
-
-
-for i in $backup_files*/; do            #   This will loop through the home dir
-    zip "${i%/}-$day.zip" -r "$i" ;     #   And then compress each account indivually
-     done
-
-scp $backup_files*.zip $dest_user@$dest_host:$remote_files # This will move the compressed accounts to the backup server
-rm -f /home/*.zip                                          # This will delete the generated archives after moving
-
-# Backup Databases
-
-for DB in $(mysql -e 'show databases' -s --skip-column-names); do # This will loop through databases
-    mysqldump $DB > "/tmp/$DB-$day.sql";                               # This will dump the databases info SQL files
+# Backup account files
+echo "Backing up cPanel accounts..."
+for i in $backup_files*/; do
+    zip_file="${i%/}-$day.zip"
+    zip -r "$zip_file" "$i"
+    if [ $? -eq 0 ]; then
+        echo "Compressed $i to $zip_file" >> $log_file
+    else
+        echo "Error: Failed to compress $i" >> $log_file
+    fi
 done
 
-# Move DB backups to backup server
+# Move compressed account files to backup server
+echo "Moving compressed account files to backup server..."
+scp "$backup_files"*.zip "$dest_user@$dest_host:$remote_files"
+if [ $? -eq 0 ]; then
+    echo "Moved compressed account files to $dest_user@$dest_host:$remote_files" >> $log_file
+    rm -f "$backup_files"*.zip
+else
+    echo "Error: Failed to move compressed account files" >> $log_file
+fi
 
-scp /tmp/*.sql $dest_user@$dest_host:$remote_dbs # This will move the DB files to the backup server
-rm -f /tmp/*.sql                                 # This will delete the generated database after moving
+# Backup databases
+echo "Backing up databases..."
+for db in $(mysql -e 'show databases' -s --skip-column-names); do
+    sql_file="/tmp/$db-$day.sql"
+    mysqldump "$db" > "$sql_file"
+    if [ $? -eq 0 ]; then
+        echo "Dumped $db to $sql_file" >> $log_file
+    else
+        echo "Error: Failed to dump $db" >> $log_file
+    fi
+done
 
+# Move database backup files to backup server
+echo "Moving database backup files to backup server..."
+scp /tmp/*.sql "$dest_user@$dest_host:$remote_dbs"
+if [ $? -eq 0 ]; then
+    echo "Moved database backup files to $dest_user@$dest_host:$remote_dbs" >> $log_file
+    rm -f /tmp/*.sql
+else
+    echo "Error: Failed to move database backup files" >> $log_file
+fi
