@@ -48,7 +48,7 @@ Update The `cpbak.conf` file.
 Change permission to file:
 
 ```bash
-chmod +x # To make the file executable.
+chmod +x cpbak.sh # To make the file executable.
 ```
 
 Here are a list of config parameters:
