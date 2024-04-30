@@ -1,10 +1,10 @@
-# Backup Script
+# cP-Bak | cPanel/WHM Server Backup Script
 
-This backup script provides a flexible and secure way to backup server files and databases. It supports uploading backups to a remote server via SCP or FTP and includes an option for SSH password authentication. The script is configurable, allowing easy adjustment of server settings, paths, and credentials.
+This cPanel / WHM backup script provides a flexible and secure way to backup server files and databases. It supports uploading backups to a remote server via SCP or FTP and includes an option for SSH password authentication. The script is configurable, allowing easy adjustment of server settings, paths, and credentials.
 
 ## Features
 
-- **File Backup**: Compresses and backs up specified directories.
+- **File Backup**: Compresses and backs up users in home directories in cPanel server.
 - **Database Backup**: Dumps MySQL databases into SQL files.
 - **Flexible Upload Options**: Supports file transfer via SCP (using SSH keys or password) and FTP.
 - **Configurable**: All settings are centralized in a configuration file for ease of management.
@@ -30,7 +30,7 @@ sudo apt-get install zip mysql-client sshpass lftp openssh-client
 
 ## Configuration
 
-Update The cpbak.conf file.
+Update The `cpbak.conf` file.
 
 Change permission to file:
 
@@ -42,9 +42,9 @@ Here are a list of config parameters:
 
 Here are the configuration parameters you need to set:
 
-- dest_host: Destination host for SCP or FTP.
-- dest_user: Username for SCP or FTP.
-- ssh_pass: Password for SSH (use only if necessary, not recommended).
+- dest_host: Destination host for `SCP` or `FTP`.
+- dest_user: Username for `SCP` or `FTP`.
+- ssh_pass: Password for `SSH` (use only if necessary, not recommended).
 - ftp_host: FTP server address.
 - ftp_user: FTP username.
 - ftp_pass: FTP password.
