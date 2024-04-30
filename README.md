@@ -26,3 +26,43 @@ You can install the necessary packages using the following commands (for Ubuntu-
 ```bash
 sudo apt-get update
 sudo apt-get install zip mysql-client sshpass lftp openssh-client
+```
+
+## Configuration
+
+Update The cpbak.conf file.
+
+Change permission to file:
+
+```bash
+chmod +x # To make the file executable.
+```
+
+Here are a list of config parameters:
+
+Here are the configuration parameters you need to set:
+
+- dest_host: Destination host for SCP or FTP.
+- dest_user: Username for SCP or FTP.
+- ssh_pass: Password for SSH (use only if necessary, not recommended).
+- ftp_host: FTP server address.
+- ftp_user: FTP username.
+- ftp_pass: FTP password.
+- backup_files: Directory to backup.
+- remote_files: Remote directory for storing file backups.
+- remote_dbs: Remote directory for storing database backups.
+- log_file: Path to the log file.
+
+## Usage
+To use the backup script, execute it with the desired option:
+```bash
+# Default (SCP using SSH keys)
+./backup_script.sh
+
+# SCP with password (not secure)
+./backup_script.sh pw-login
+
+# FTP
+./backup_script.sh ftp
+```
+
