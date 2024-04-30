@@ -22,8 +22,8 @@ Before using this backup script, ensure the following prerequisites are met:
 - **SSH Client**: Required for SCP transfers.
 
 You can install the necessary packages using the following commands:
-`Ubuntu`
 
+`Ubuntu`
 ```bash
 sudo apt-get update
 sudo apt-get install zip mysql-client sshpass lftp openssh-client
