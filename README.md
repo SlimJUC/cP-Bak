@@ -21,12 +21,25 @@ Before using this backup script, ensure the following prerequisites are met:
 - **LFTP**: Necessary for FTP transfers.
 - **SSH Client**: Required for SCP transfers.
 
-You can install the necessary packages using the following commands (for Ubuntu-based systems):
+You can install the necessary packages using the following commands:
+`Ubuntu`
 
 ```bash
 sudo apt-get update
 sudo apt-get install zip mysql-client sshpass lftp openssh-client
 ```
+`CentOS/RHEL 7 and Earlier`
+```bash
+sudo yum update
+sudo yum install zip mysql mariadb-client sshpass lftp openssh-clients
+```
+
+`CentOS/RHEL 8, Rocky Linux, AlmaLinux`
+```bash
+sudo dnf update
+sudo dnf install zip mysql mariadb-client sshpass lftp openssh-clients
+```
+
 
 ## Configuration
 
