@@ -55,8 +55,8 @@ Here are a list of config parameters:
 
 Here are the configuration parameters you need to set:
 
-- dest_host: Destination host for `SCP` or `FTP`.
-- dest_user: Username for `SCP` or `FTP`.
+- dest_host: Destination host for `SCP`.
+- dest_user: Username for `SCP`.
 - ssh_pass: Password for `SSH` (use only if necessary, not recommended).
 - ftp_host: FTP server address.
 - ftp_user: FTP username.
@@ -79,3 +79,9 @@ To use the backup script, execute it with the desired option:
 ./backup_script.sh ftp
 ```
 
+## Automation of backups
+
+Add the command to Cron Jobs
+```bash
+crontab -e
+```
